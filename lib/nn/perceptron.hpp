@@ -11,6 +11,12 @@
 #include "../math/vector.hpp" // Vector, std::size_t
 #include "../math/random.hpp" // getEngine
 
+#define __PERCEPTRON_IS_PRINTABLE__
+
+#ifdef __PERCEPTRON_IS_PRINTABLE__
+#include <ostream>
+#endif
+
 template <
     std::size_t Inputs,
     typename NumberType = double
@@ -133,6 +139,22 @@ struct Perceptron
     {
         return iterations;
     }
+
+    // OSTREAM OVERLOAD
+
+#ifdef __PERCEPTRON_IS_PRINTABLE__
+
+    friend std::ostream& operator<<(std::ostream& os, const Perceptron& perceptron)
+    {
+        os << "[\n\tWeights: " << perceptron.weights << "\n";
+        os << "\tBias Weight: " << perceptron.bias << "\n";
+        os << "\tWeights updated " << perceptron.iterations << " times\n";
+        os << "\tLearning rate is " << perceptron.rate << "\n";
+        os << "]";
+        return os;
+    }
+
+#endif
 
 private:
 

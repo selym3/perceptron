@@ -56,6 +56,8 @@ int main(void)
     auto iterations = operation.learn(DATA, EPSILON, MAX_LEARNING);
     std::cout << "After " << iterations << " iterations learning has stopped.\n";
 
+    std::cout << "Perceptron looks like: " << operation << "\n";
+
     // TEST
     for (const auto& datum : DATA)
     {
