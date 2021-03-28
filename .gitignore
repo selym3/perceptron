@@ -1,3 +1,9 @@
+.vscode/
+
+###############
+# C++ IGNORES #
+###############
+
 # Prerequisites
 *.d
 
