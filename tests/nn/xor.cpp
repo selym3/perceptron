@@ -4,6 +4,27 @@
 
 auto STEP_FUNCTION = [](auto x) { return (x > 0) ? 1 : -1; };
 
+/*
+Create a trained perceptron given some data
+and an accepted error
+*/
+template <std::size_t Inputs>
+Perceptron<Inputs> TrainedPerceptron(
+    const typename Perceptron<Inputs>::TrainingData& data, 
+    double epsilon = 0, 
+    int maxIterations = 100
+) {
+    Perceptron<Inputs> perceptron = {
+        typename Perceptron<Inputs>::Input(0),
+        0,
+        STEP_FUNCTION
+    };
+
+    perceptron.learn(data, epsilon, maxIterations);
+
+    return perceptron;
+}
+
 Perceptron<2> OrPerceptron(Perceptron<2>::Number epsilon = 0, int maxIterations = 100)
 {
     Perceptron<2>::TrainingData data = {
@@ -13,15 +34,7 @@ Perceptron<2> OrPerceptron(Perceptron<2>::Number epsilon = 0, int maxIterations 
         { {{ -1, -1 }}, -1 }
     };
 
-    Perceptron<2> orPerceptron = {
-        Perceptron<2>::Input(0), 
-        0,
-        STEP_FUNCTION
-    };
-
-    orPerceptron.learn(data, epsilon, maxIterations);
-
-    return orPerceptron;
+    return TrainedPerceptron<2>(data, epsilon, maxIterations);
 }
 
 Perceptron<2> AndPerceptron(Perceptron<2>::Number epsilon = 0, int maxIterations = 100)
@@ -33,15 +46,7 @@ Perceptron<2> AndPerceptron(Perceptron<2>::Number epsilon = 0, int maxIterations
         { {{ -1, -1 }}, -1 }
     };
 
-    Perceptron<2> andPerceptron = {
-        Perceptron<2>::Input(0), 
-        0,
-        STEP_FUNCTION
-    };
-
-    andPerceptron.learn(data, epsilon, maxIterations);
-
-    return andPerceptron;
+    return TrainedPerceptron<2>(data, epsilon, maxIterations);
 }
 
 Perceptron<1> NotPerceptron(Perceptron<1>::Number epsilon = 0, int maxIterations = 100)
@@ -51,15 +56,7 @@ Perceptron<1> NotPerceptron(Perceptron<1>::Number epsilon = 0, int maxIterations
         { {{ -1 }}, +1 }
     };
 
-    Perceptron<1> notPerceptron = {
-        Perceptron<1>::Input(0), 
-        0,
-        STEP_FUNCTION
-    };
-
-    notPerceptron.learn(data, epsilon, maxIterations);
-
-    return notPerceptron;
+    return TrainedPerceptron<1>(data, epsilon, maxIterations);
 }
 
 struct XOR_Gate
@@ -70,7 +67,7 @@ struct XOR_Gate
     Perceptron<1> notGate;
 
     XOR_Gate() :
-        orGate { OrPerceptron() },
+        orGate  { OrPerceptron()  },
         andGate { AndPerceptron() },
         notGate { NotPerceptron() }
     {
